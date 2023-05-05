@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:transactions/transaction.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:transactions/bill.dart';
 
 class WalletWidget extends StatefulWidget {
   const WalletWidget({
-    super.key
+    super.key,
+    required this.carousel
   });
 
+  final CarouselController carousel;
   @override
   State<WalletWidget> createState() => _WalletWidgetState();
+  
 }
 
 class _WalletWidgetState extends State<WalletWidget> {
@@ -24,7 +29,7 @@ class _WalletWidgetState extends State<WalletWidget> {
       body: Stack(
         children: [
           topBox(),
-          SingleChildScrollView(child: mainArea())
+          mainArea()
         ],
       )
     );
@@ -32,6 +37,12 @@ class _WalletWidgetState extends State<WalletWidget> {
 
   AppBar appBar() {
     return AppBar(
+      leading: IconButton(
+        onPressed: (){
+          widget.carousel.jumpToPage(0);
+        },
+        icon: Icon(Icons.arrow_back_ios),
+      ),
       backgroundColor: Colors.white.withOpacity(0),
       elevation: 0,
       foregroundColor: Colors.white,
@@ -94,7 +105,10 @@ class _WalletWidgetState extends State<WalletWidget> {
         const SizedBox(height: 25),
         toggleButton(),
         const SizedBox(height: 25),
-        toggledContents()
+        Align(
+          alignment: Alignment.topCenter,
+          child: toggledContents()
+        )
       ],
     );
   }
@@ -197,70 +211,87 @@ class _WalletWidgetState extends State<WalletWidget> {
     );
   }
 
-  Widget toggledContents() {
-    return SingleChildScrollView(
-      child: Column(
-        children: _toggleSelected[0] ? 
-        [
-          TransactionWidget(
+  List<Widget> transactions = [
+    TransactionWidget(
               title: "Netflix",
               imagePath: "assets/images/netflix.jpg",
               date: DateTime(2002),
               amount: 15,
           ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
+    TransactionWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+      amount: -15,
+    ),
+    TransactionWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+      amount: -15,
+    ),
+    TransactionWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+      amount: -15,
+    ),
+    TransactionWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+      amount: -15,
+    ),
+    TransactionWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+      amount: -15,
+    ),
+    TransactionWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+      amount: -15,
+    ),
+    TransactionWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+      amount: -15,
+    ),
+  ];
 
-        ]
-        :
-        [Text("Upcoming Bills")]
+  List<Widget> bills = [
+    BillWidget(
+        title: "Netflix",
+        imagePath: "assets/images/netflix.jpg",
+        date: DateTime(2002),
+    ),
+    const SizedBox(height: 10),
+    BillWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+    ),
+    const SizedBox(height: 10),
+    BillWidget(
+      title: "Youtube",
+      imagePath: "assets/images/youtube.png",
+      date: DateTime(2002),
+    ),
+  ];
+
+  Widget toggledContents() {
+    return Container(
+      height: 300,
+      padding: EdgeInsets.zero,
+      child: SingleChildScrollView(
+        child: Column(
+          children: _toggleSelected[0] ? 
+          transactions :
+          bills
+        )
       )
     );
   }

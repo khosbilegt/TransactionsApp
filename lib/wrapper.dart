@@ -37,11 +37,11 @@ class _WrapperWidgetState extends State<WrapperWidget> {
             setState(() {}),
           },
         ),
-        items: const <Widget>[
-          HomePage(title: "Test"),
-          HomePage(title: "Test"),
-          WalletWidget(),
-          HomePage(title: "Test"),
+        items: <Widget>[
+          const HomePage(title: "Test"),
+          const HomePage(title: "Test"),
+          WalletWidget(carousel: carouselController),
+          const HomePage(title: "Test"),
         ]
       ),
       bottomNavigationBar: bottomBar(),
@@ -83,7 +83,6 @@ class _WrapperWidgetState extends State<WrapperWidget> {
         setState(() {});
       },
       icon: icon,
-      iconSize: 25,
       color: index == currentIndex ? Colors.green.shade300 : Colors.black45,
     );
   }
