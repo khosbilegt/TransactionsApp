@@ -29,7 +29,7 @@ class _WrapperWidgetState extends State<WrapperWidget> {
       body: CarouselSlider(
         carouselController: carouselController,
         options: CarouselOptions(
-          height: MediaQuery.of(context).size.height - 200,
+          height: MediaQuery.of(context).size.height,
           enableInfiniteScroll: false,
           viewportFraction: 1,
           onPageChanged:(index, reason) => {

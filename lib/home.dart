@@ -18,18 +18,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            helloBox(),
-            notificationsButton(),
-            Center (
-              child: mainArea()
-            ),
-          ]
-        ),
-      ),
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          helloBox(),
+          notificationsButton(),
+          Center (
+            child: mainArea()
+          ),
+        ]
+      )
     );
   }
 
@@ -233,6 +231,34 @@ class _HomePageState extends State<HomePage> {
             imagePath: "assets/images/netflix.jpg",
             date: DateTime(2002),
             amount: 15,
+          ),
+          const SizedBox(height: 10),
+          TransactionWidget(
+            title: "Youtube",
+            imagePath: "assets/images/youtube.png",
+            date: DateTime(2002),
+            amount: -15,
+          ),
+          const SizedBox(height: 10),
+          TransactionWidget(
+            title: "Youtube",
+            imagePath: "assets/images/youtube.png",
+            date: DateTime(2002),
+            amount: -15,
+          ),
+          const SizedBox(height: 10),
+          TransactionWidget(
+            title: "Youtube",
+            imagePath: "assets/images/youtube.png",
+            date: DateTime(2002),
+            amount: -15,
+          ),
+          const SizedBox(height: 10),
+          TransactionWidget(
+            title: "Youtube",
+            imagePath: "assets/images/youtube.png",
+            date: DateTime(2002),
+            amount: -15,
           ),
           const SizedBox(height: 10),
           TransactionWidget(

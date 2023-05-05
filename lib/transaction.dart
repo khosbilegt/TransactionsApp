@@ -37,7 +37,7 @@ class _TransactionWidgetState extends State<TransactionWidget> {
           amountText,
           style: TextStyle(
             color: widget.amount > 0 ? Colors.green : Colors.red,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             fontSize: 20,
           ),
         ),
@@ -52,12 +52,12 @@ class _TransactionWidgetState extends State<TransactionWidget> {
           width: 60,
           height: 50,
           decoration: BoxDecoration(
-            color: Colors.black26,
-            borderRadius: BorderRadius.circular(5),
+            color: Colors.black12,
+            borderRadius: BorderRadius.circular(10),
           ),
           alignment: Alignment.center,
           child: Image(
-            width: 40,
+            width: 35,
             image: AssetImage(widget.imagePath),
           ),
         ),
@@ -68,13 +68,14 @@ class _TransactionWidgetState extends State<TransactionWidget> {
             Text(
               widget.title,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
               ),
             ),
             Text(
               parseDate(),
               style: const TextStyle(
                 color: Colors.black54,
+                fontSize: 14
               ),
             ),
           ],

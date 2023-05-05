@@ -32,6 +32,9 @@ class _AddPageState extends State<AddPage> {
       elevation: 0,
       foregroundColor: Colors.white,
       title: const Text("Add Expense"),
+      actions: [
+        IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {})
+      ]
     );
   }
 
@@ -131,7 +134,7 @@ class _AddPageState extends State<AddPage> {
             ),
           ),
           textInputAction: TextInputAction.continueAction,
-          keyboardType: TextInputType.number,
+          keyboardType: TextInputType.datetime,
         ),
         const SizedBox(height: 25),
         Align(
