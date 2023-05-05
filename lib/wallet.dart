@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:transactions/transaction.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:transactions/bill.dart';
+import 'package:transactions/wallet_add.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class WalletWidget extends StatefulWidget {
   const WalletWidget({
@@ -18,6 +19,7 @@ class WalletWidget extends StatefulWidget {
 class _WalletWidgetState extends State<WalletWidget> {
 
   Color mainColor = const Color.fromRGBO(94, 143, 140, 1);
+  bool isConnect = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +41,19 @@ class _WalletWidgetState extends State<WalletWidget> {
     return AppBar(
       leading: IconButton(
         onPressed: (){
-          widget.carousel.jumpToPage(0);
+          if(isConnect) {
+            isConnect = false;
+            setState(() {});
+          } else {
+            widget.carousel.jumpToPage(0);
+          }
         },
         icon: Icon(Icons.arrow_back_ios),
       ),
       backgroundColor: Colors.white.withOpacity(0),
       elevation: 0,
       foregroundColor: Colors.white,
-      title: const Text("Wallet"),
+      title: isConnect ? Text("Connect Wallet") : Text("Wallet"),
     );
   }
 
@@ -89,7 +96,7 @@ class _WalletWidgetState extends State<WalletWidget> {
           width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            child: mainContent()
+            child: isConnect ? ConnectPage() : mainContent()
           ),
         )
       ],
@@ -145,7 +152,10 @@ class _WalletWidgetState extends State<WalletWidget> {
         FloatingActionButton(
           elevation: 0,
           backgroundColor: Colors.white,
-          onPressed: (){}, 
+          onPressed: () {
+            isConnect = true;
+            setState(() {});
+          }, 
           shape: floatingButtonBorder,
           child: Icon(Icons.add, size: 24, color: accentColor),
         ),
@@ -213,47 +223,19 @@ class _WalletWidgetState extends State<WalletWidget> {
 
   List<Widget> transactions = [
     TransactionWidget(
-              title: "Netflix",
-              imagePath: "assets/images/netflix.jpg",
-              date: DateTime(2002),
-              amount: 15,
-          ),
+        title: "Netflix",
+        imagePath: "assets/images/netflix.jpg",
+        date: DateTime(2002),
+        amount: 15,
+    ),
+    const SizedBox(height: 10),
     TransactionWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",
       date: DateTime(2002),
       amount: -15,
     ),
-    TransactionWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
-      amount: -15,
-    ),
-    TransactionWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
-      amount: -15,
-    ),
-    TransactionWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
-      amount: -15,
-    ),
-    TransactionWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
-      amount: -15,
-    ),
-    TransactionWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
-      amount: -15,
-    ),
+    const SizedBox(height: 10),
     TransactionWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",

@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transactions/add.dart';
 import 'package:transactions/home.dart';
-import 'package:transactions/onboard.dart';
+//import 'package:transactions/onboard.dart';
 import 'package:transactions/wallet.dart';
 
 class WrapperWidget extends StatefulWidget {
