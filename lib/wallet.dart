@@ -190,12 +190,12 @@ class _WalletWidgetState extends State<WalletWidget> {
         },
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             width: 150,
             child: const Text('Transactions', textAlign: TextAlign.center)
           ), 
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             width: 150,
             child: const Text('Upcoming Bills',  textAlign: TextAlign.center)
           ), 

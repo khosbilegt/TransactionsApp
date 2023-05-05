@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transactions/transaction.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -16,8 +17,22 @@ class _HomePageState extends State<HomePage> {
   final Color balanceCardColor = const Color.fromRGBO(70, 124, 121, 1);
   final Color helloCardColor = const Color.fromRGBO(77, 135, 131, 1);
 
+  Future getTransactions() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    var db = FirebaseFirestore.instance;
+    final user = <String, dynamic>{
+      "first": "Ada",
+      "last": "Lovelace",
+      "born": 1815
+    };
+    db.collection("transactions").add(user).then((doc) =>
+    print('DocumentSnapshot added with ID: ${doc.id}'));
+  }
+
   @override
   Widget build(BuildContext context) {
+    //getTransactions();
+
     return SingleChildScrollView(
       child: Stack(
         children: [
@@ -273,9 +288,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget helloBox() {
-    return const Positioned(
+    return Positioned(
       top: 0,
-      child: Image(image: AssetImage("assets/images/top.png")),
+      child: Stack(
+        children: [
+          const Image(image: AssetImage("assets/images/top.png")),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+            vertical: 75,
+            horizontal: 25,
+          ),
+          child: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: const [
+               Text(
+                 "Good afternoon,",
+                 style: TextStyle(color: Colors.white, fontSize: 15),
+               ),
+               Text(
+                 "Khosbilegt Bilegsaikhan",
+                 style: TextStyle(color: Colors.white, fontSize: 25),
+               ),
+             ],
+           ),
+          )
+        ],
+      ),
     );
   }
 
@@ -293,6 +331,14 @@ class _HomePageState extends State<HomePage> {
           child: const Icon(Icons.notifications),
         ),
       )
+    );
+  }
+
+  Widget sendAgain() {
+    return Row(
+      children: [
+        FloatingActionButton(onPressed: () {}, child: const Image(image: AssetImage("assets/images/youtube.png")))
+      ],
     );
   }
 }

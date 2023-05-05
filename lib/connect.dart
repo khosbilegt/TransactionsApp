@@ -51,14 +51,14 @@ class _ConnectCardPageState extends State<ConnectCardPage> {
           }
           setState(() {});
         },
-        children: [
-          Container(
+        children: const[
+          SizedBox(
             width: 150,
-            child: const Text('Cards', textAlign: TextAlign.center)
+            child: Text('Cards', textAlign: TextAlign.center)
           ), 
-          Container(
+          SizedBox(
             width: 150,
-            child: const Text('Accounts',  textAlign: TextAlign.center)
+            child: Text('Accounts',  textAlign: TextAlign.center)
           ), 
         ],
       ),
@@ -357,7 +357,7 @@ class _ConnectCardPageState extends State<ConnectCardPage> {
               icon: Icon(Icons.check_circle, color: accentColor, size: 30),
             )
             :
-            Text("")
+            const Text("")
           ],
         )
       )

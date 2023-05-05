@@ -212,7 +212,7 @@ class _AddPageState extends State<AddPage> {
         borderType: BorderType.RRect,
         radius: const Radius.circular(8),
         child: TextButton(
-          onPressed: () => {print("Clicked")},
+          onPressed: () => { },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

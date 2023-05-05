@@ -40,7 +40,7 @@ class _OnboardPageState extends State<OnboardPage> {
             onPressed: (){
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomePage(title: "")),
+              MaterialPageRoute(builder: (context) => const HomePage(title: "")),
               );
             }, 
             child: const Text("Get Started")
@@ -65,6 +65,6 @@ class _OnboardPageState extends State<OnboardPage> {
   Future<void> setOnboard() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("onboard", true);
-    print("Sets Onboard");
+    //print("Sets Onboard");
   }
 }
