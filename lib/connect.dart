@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ConnectPage extends StatefulWidget {
-  const ConnectPage({super.key});
+class ConnectCardPage extends StatefulWidget {
+  const ConnectCardPage({super.key});
 
   @override
-  State<ConnectPage> createState() => _ConnectPageState();
+  State<ConnectCardPage> createState() => _ConnectCardPageState();
 }
 
-class _ConnectPageState extends State<ConnectPage> {
+class _ConnectCardPageState extends State<ConnectCardPage> {
   
   TextStyle textStyle = const TextStyle(
     fontSize: 30,
@@ -69,7 +69,7 @@ class _ConnectPageState extends State<ConnectPage> {
     return _toggleSelected[0] ? 
     cardContents()
     : 
-    const Text("Accounts");
+    accountContents();
   }
 
   Widget cardContents() {
@@ -280,6 +280,111 @@ class _ConnectPageState extends State<ConnectPage> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget accountContents() {
+    return Column(
+      children: [
+        const SizedBox(height: 30),
+        accountTypeButton(Icons.account_balance, "Bank Link", "Connect your bank account to deposit & fund", 0),
+        const SizedBox(height: 30),
+        accountTypeButton(Icons.paid_outlined, "Microdeposits", "Connect bank in 5-7 days", 1),
+        const SizedBox(height: 30),
+        accountTypeButton(Icons.paypal, "Paypal", "Connect you paypal account", 2),
+        const SizedBox(height: 50),
+        accountNextButton()
+      ],
+    );
+  }
+
+  int activeAccountIndex = 0;
+  Widget accountTypeButton(IconData icon, String title, String explanation, int index) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          activeAccountIndex = index;
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        decoration: const BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              height: 50,
+              child: FloatingActionButton(
+                onPressed: (){},
+                elevation: 0,
+                backgroundColor: Colors.white,
+                foregroundColor: activeAccountIndex == index ? accentColor : Colors.black38,
+                child: Icon(icon, size: 30),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: activeAccountIndex == index ? accentColor : Colors.black38,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.55,
+                  child: Text(
+                    explanation,
+                    softWrap: true,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                      color: activeAccountIndex == index ? accentColor : Colors.black38,
+                      fontSize: 13
+                    ),
+                  )
+                ),
+              ],
+            ),
+            activeAccountIndex == index ? 
+            IconButton(
+              onPressed: (){},
+              icon: Icon(Icons.check_circle, color: accentColor, size: 30),
+            )
+            :
+            Text("")
+          ],
+        )
+      )
+    );
+  }
+
+  Widget accountNextButton() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: 50,
+      child: ElevatedButton(
+        onPressed: () {
+          
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: accentColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          side: BorderSide(
+            color: accentColor,
+          ),
+        ),
+        child: const Text("Next")
+      ),
     );
   }
 }

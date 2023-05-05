@@ -199,26 +199,9 @@ class _AddPageState extends State<AddPage> {
   }
 
   Widget topBox() {
-    return Positioned(
+    return const Positioned(
       top: 0,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          border: Border.all(
-            color: mainColor,
-          ),
-          color: mainColor,
-        ),
-        height: 250,
-        width: MediaQuery.of(context).size.width,
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 75,
-            horizontal: 25
-          ),
-          child: Text(""),
-        ),
-      )
+      child: Image(image: AssetImage("assets/images/top.png")),
     );
   }
 

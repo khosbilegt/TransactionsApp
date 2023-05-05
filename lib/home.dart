@@ -273,38 +273,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget helloBox() {
-    return Positioned(
+    return const Positioned(
       top: 0,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          border: Border.all(
-            color: helloCardColor,
-          ),
-          color: helloCardColor,
-        ),
-        height: 250,
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 75,
-            horizontal: 25
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                "Good afternoon,",
-                style: TextStyle(color: Colors.white, fontSize: 15),
-              ),
-              Text(
-                "Khosbilegt Bilegsaikhan",
-                style: TextStyle(color: Colors.white, fontSize: 25),
-              ),
-            ],
-          )
-        ),
-      )
+      child: Image(image: AssetImage("assets/images/top.png")),
     );
   }
 

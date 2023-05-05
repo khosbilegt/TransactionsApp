@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transactions/transaction.dart';
 import 'package:transactions/bill.dart';
-import 'package:transactions/collect.dart';
+import 'package:transactions/connect.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class WalletWidget extends StatefulWidget {
@@ -53,31 +53,14 @@ class _WalletWidgetState extends State<WalletWidget> {
       backgroundColor: Colors.white.withOpacity(0),
       elevation: 0,
       foregroundColor: Colors.white,
-      title: isConnect ? Text("Connect Wallet") : Text("Wallet"),
+      title: isConnect ? const Text("Connect Wallet") : const Text("Wallet"),
     );
   }
 
   Widget topBox() {
-  return Positioned(
+    return const Positioned(
       top: 0,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          border: Border.all(
-            color: mainColor,
-          ),
-          color: mainColor,
-        ),
-        height: 250,
-        width: MediaQuery.of(context).size.width,
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 75,
-            horizontal: 25
-          ),
-          child: Text(""),
-        ),
-      )
+      child: Image(image: AssetImage("assets/images/top.png")),
     );
   }
   
@@ -96,7 +79,7 @@ class _WalletWidgetState extends State<WalletWidget> {
           width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            child: isConnect ? ConnectPage() : mainContent()
+            child: isConnect ? const ConnectCardPage()  : mainContent()
           ),
         )
       ],
