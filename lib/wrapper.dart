@@ -24,39 +24,62 @@ class _WrapperWidgetState extends State<WrapperWidget> {
   @override
   Widget build(BuildContext context) {
     checkOnboard();
-
-    return Scaffold(
-      body: CarouselSlider(
-        carouselController: carouselController,
-        options: CarouselOptions(
-          height: MediaQuery.of(context).size.height,
-          enableInfiniteScroll: false,
-          viewportFraction: 1,
-          onPageChanged:(index, reason) => {
-            currentIndex = index,
-            setState(() {}),
-          },
+    if(currentIndex == 0) {
+      return Scaffold(
+        body: CarouselSlider(
+          carouselController: carouselController,
+          options: CarouselOptions(
+            height: MediaQuery.of(context).size.height,
+            enableInfiniteScroll: false,
+            viewportFraction: 1,
+            onPageChanged:(index, reason) => {
+              currentIndex = index,
+              setState(() {}),
+            },
+          ),
+          items: <Widget>[
+            const HomePage(title: "Test"),
+            const HomePage(title: "Test"),
+            WalletWidget(carousel: carouselController),
+            const HomePage(title: "Test"),
+          ]
         ),
-        items: <Widget>[
-          const HomePage(title: "Test"),
-          const HomePage(title: "Test"),
-          WalletWidget(carousel: carouselController),
-          const HomePage(title: "Test"),
-        ]
-      ),
-      bottomNavigationBar: bottomBar(),
-      floatingActionButton: FloatingActionButton(
-        heroTag: null,
-        onPressed: () {
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AddPage()),
-        );
-        },
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
+        bottomNavigationBar: bottomBar(),
+        floatingActionButton: FloatingActionButton(
+          heroTag: null,
+          onPressed: () {
+            Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddPage()),
+          );
+          },
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      );
+    } else {
+      return Scaffold(
+        body: CarouselSlider(
+          carouselController: carouselController,
+          options: CarouselOptions(
+            height: MediaQuery.of(context).size.height,
+            enableInfiniteScroll: false,
+            viewportFraction: 1,
+            onPageChanged:(index, reason) => {
+              currentIndex = index,
+              setState(() {}),
+            },
+          ),
+          items: <Widget>[
+            const HomePage(title: "Test"),
+            const HomePage(title: "Test"),
+            WalletWidget(carousel: carouselController),
+            const HomePage(title: "Test"),
+          ]
+        ),
+        bottomNavigationBar: bottomBar(),
+      );
+    }
   }
   
   Widget bottomBar() {

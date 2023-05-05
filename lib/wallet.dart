@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transactions/transaction.dart';
 import 'package:transactions/bill.dart';
-import 'package:transactions/wallet_add.dart';
+import 'package:transactions/collect.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class WalletWidget extends StatefulWidget {
@@ -48,7 +48,7 @@ class _WalletWidgetState extends State<WalletWidget> {
             widget.carousel.jumpToPage(0);
           }
         },
-        icon: Icon(Icons.arrow_back_ios),
+        icon: const Icon(Icons.arrow_back_ios),
       ),
       backgroundColor: Colors.white.withOpacity(0),
       elevation: 0,
