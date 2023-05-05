@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -53,7 +54,7 @@ class _AddPageState extends State<AddPage> {
               ),
             ],
           ),
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.65,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Padding(
             padding: const EdgeInsets.all(30),
@@ -66,18 +67,40 @@ class _AddPageState extends State<AddPage> {
 
   var amountController = TextEditingController();
   var dateController = TextEditingController();
+  var borderStyle = const OutlineInputBorder(
+    borderSide: BorderSide(color: Color.fromRGBO(85, 134, 131, 1), width: 1.5),
+  );
+  var borderLabelStyle = const TextStyle(
+    color: Colors.black45,
+    fontSize: 17,
+    fontWeight: FontWeight.w500
+  );
 
   Widget mainContent() {
     return Column(
       children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "NAME",
+            style: borderLabelStyle,
+          ),
+        ),
         dropdownButton(),
-        const SizedBox(height: 25),
+        const SizedBox(height: 10),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "AMOUNT",
+            style: borderLabelStyle,
+          ),
+        ),
+        const SizedBox(height: 10),
         TextField(
           controller: amountController,
           decoration: InputDecoration(
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            border: OutlineInputBorder(),
-            label: const Text('Amount'),
+            focusedBorder: borderStyle,
+            border: const OutlineInputBorder(),
             hintText: '\$10.0',
             suffixIcon: IconButton(
               onPressed: amountController.clear,
@@ -87,13 +110,20 @@ class _AddPageState extends State<AddPage> {
           textInputAction: TextInputAction.continueAction,
           keyboardType: TextInputType.number,
         ),
-        const SizedBox(height: 25),
+        const SizedBox(height: 20),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "DATE",
+            style: borderLabelStyle,
+          ),
+        ),
+        const SizedBox(height: 10),
         TextField(
           controller: dateController,
           decoration: InputDecoration(
-            floatingLabelBehavior: FloatingLabelBehavior.always,
+            focusedBorder: borderStyle,
             border: const OutlineInputBorder(),
-            label: const Text('Date'),
             hintText: '01/05/2023',
             suffixIcon: IconButton(
               onPressed: dateController.clear,  
@@ -104,13 +134,24 @@ class _AddPageState extends State<AddPage> {
           keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 25),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "INVOICE",
+            style: borderLabelStyle,
+          ),
+        ),
+        const SizedBox(height: 10),
+        invoiceButton(),
+        const SizedBox(height: 40),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.8,
           height: 50,
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(85, 134, 131, 1), elevation: 0),
             onPressed: () {
               Navigator.pop(context);
-            }, 
+            },
             child: const Text("Add")
           ),
         ),
@@ -177,4 +218,35 @@ class _AddPageState extends State<AddPage> {
       )
     );
   }
+
+  Widget invoiceButton() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: const Radius.circular(8),
+        child: TextButton(
+          onPressed: () => {print("Clicked")},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.add_circle, color: Colors.black45),
+              const SizedBox(width: 10),
+              Text('Download', style: borderLabelStyle)
+            ],
+          ), // <-- Text
+        ),
+      )
+    );
+  }
 }
+/*
+ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: Colors.white
+        ),
+        onPressed: (){}, 
+        child: Text("Test", style: borderLabelStyle)
+      )
+      */
