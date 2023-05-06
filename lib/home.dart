@@ -19,12 +19,6 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> transactions = [];
   bool hasReceived = false;
 
-  void sortTransactionsByDate() {
-    for(int i = 0; i < transactions.length; i++) {
-
-    }
-  }
-
   Future getTransactions() async {
     if(!hasReceived) {
       transactions.clear();
@@ -54,7 +48,6 @@ class _HomePageState extends State<HomePage> {
               amount: amount,
             )
           );
-          //transactions.add(const SizedBox(height: 10));
         }
       }
       transactions.sort((a, b) {

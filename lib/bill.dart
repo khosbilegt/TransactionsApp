@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transactions/bill_payment.dart';
 
 class BillWidget extends StatefulWidget {
   const BillWidget({
@@ -7,7 +8,6 @@ class BillWidget extends StatefulWidget {
     required this.imagePath,
     required this.date,
   });
-
 
   final String title;
   final String imagePath;
@@ -20,7 +20,6 @@ class BillWidget extends StatefulWidget {
 class _BillWidgetState extends State<BillWidget> {
   @override
   Widget build(BuildContext context) {
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -34,7 +33,10 @@ class _BillWidgetState extends State<BillWidget> {
               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
             onPressed: () {
-              
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BillPaymentPage()),
+              );
             }, 
             child: const Text(
               "Pay", 

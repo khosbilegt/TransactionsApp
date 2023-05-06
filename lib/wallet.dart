@@ -247,19 +247,19 @@ class _WalletWidgetState extends State<WalletWidget> {
     );
   }
 
-  List<Widget> bills = [
+  List<Widget> bills = const [
     BillWidget(
         title: "Netflix",
-        imagePath: "assets/images/netflix.jpg",
+        imagePath: "assets/images/netflix.png",
         date: "01/05/2023",
     ),
-    const SizedBox(height: 10),
+    SizedBox(height: 10),
     BillWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",
       date: "01/05/2023",
     ),
-    const SizedBox(height: 10),
+    SizedBox(height: 10),
     BillWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",
