@@ -3,6 +3,7 @@ import 'package:transactions/transaction.dart';
 import 'package:transactions/bill.dart';
 import 'package:transactions/connect.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WalletWidget extends StatefulWidget {
   const WalletWidget({
@@ -20,10 +21,52 @@ class _WalletWidgetState extends State<WalletWidget> {
 
   Color mainColor = const Color.fromRGBO(94, 143, 140, 1);
   bool isConnect = false;
+  final List<Widget> transactions = [];
+  bool hasReceived = false;
+
+  Future getTransactions() async {
+    if(!hasReceived) {
+      transactions.clear();
+      WidgetsFlutterBinding.ensureInitialized();
+      var db = FirebaseFirestore.instance;
+      CollectionReference users = db.collection('transactions');
+      QuerySnapshot querySnapshot = await users.get();
+      for (var doc in querySnapshot.docs) {
+        dynamic data = doc.data();
+        if(data["title"] != null) {
+          double amount = 0;
+          if(data["amount"].runtimeType == String) {
+            amount = double.parse(data["amount"]);
+          }
+          else if(data["amount"].runtimeType == int) {
+            amount = data["amount"].toDouble();
+          }
+          else if(data["amount"].runtimeType == double) {
+            amount = data["amount"];
+          }
+          
+          transactions.add(
+            TransactionWidget(
+              title: data["title"],
+              imagePath: data["icon"],
+              date: data["date"],
+              amount: amount,
+            )
+          );
+          transactions.add(const SizedBox(height: 10));
+        }
+      }
+      setState(() {
+        hasReceived = true;
+        print("got transactions");
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
+    getTransactions();
+    
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -203,29 +246,6 @@ class _WalletWidgetState extends State<WalletWidget> {
       ),
     );
   }
-
-  List<Widget> transactions = [
-    TransactionWidget(
-        title: "Netflix",
-        imagePath: "assets/images/netflix.jpg",
-        date: "01/05/2023",
-        amount: 15,
-    ),
-    const SizedBox(height: 10),
-    TransactionWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: "01/05/2023",
-      amount: -15,
-    ),
-    const SizedBox(height: 10),
-    TransactionWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: "01/05/2023",
-      amount: -15,
-    ),
-  ];
 
   List<Widget> bills = [
     BillWidget(

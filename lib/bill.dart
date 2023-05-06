@@ -33,7 +33,9 @@ class _BillWidgetState extends State<BillWidget> {
               backgroundColor: const Color.fromRGBO(238, 249, 249, 1),
               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
-            onPressed: (){}, 
+            onPressed: () {
+              
+            }, 
             child: const Text(
               "Pay", 
               style: TextStyle(color: Color.fromRGBO(85, 134, 131, 1), fontSize: 16)

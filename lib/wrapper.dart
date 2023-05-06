@@ -39,9 +39,9 @@ class _WrapperWidgetState extends State<WrapperWidget> {
           ),
           items: <Widget>[
             HomePage(carousel: carouselController),
-            HomePage(carousel: carouselController),
+            const Text(""),
             WalletWidget(carousel: carouselController),
-            HomePage(carousel: carouselController),
+            const Text(""),
           ]
         ),
         bottomNavigationBar: bottomBar(),
@@ -51,7 +51,9 @@ class _WrapperWidgetState extends State<WrapperWidget> {
             Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddPage()),
-          );
+          ).then((value) => {
+            setState((){})
+          });
           },
           child: const Icon(Icons.add),
         ),
@@ -72,9 +74,9 @@ class _WrapperWidgetState extends State<WrapperWidget> {
           ),
           items: <Widget>[
             HomePage(carousel: carouselController),
-            HomePage(carousel: carouselController),
+            const Text(""),
             WalletWidget(carousel: carouselController),
-            HomePage(carousel: carouselController),
+            const Text(""),
           ]
         ),
         bottomNavigationBar: bottomBar(),

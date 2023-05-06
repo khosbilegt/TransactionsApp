@@ -274,7 +274,7 @@ class _AddPageState extends State<AddPage> {
     }
     return isFormatted;
   }
-
+  
   Future addTransaction() async {
     // Validate Amount
     if(double.tryParse(amountController.value.text) == null) {
