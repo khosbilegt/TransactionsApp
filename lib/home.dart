@@ -17,10 +17,11 @@ class _HomePageState extends State<HomePage> {
   final Color balanceCardColor = const Color.fromRGBO(70, 124, 121, 1);
   final Color helloCardColor = const Color.fromRGBO(77, 135, 131, 1);
   final List<Widget> transactions = [];
-  bool hasReceived = false;
+  bool hasReceivedTransactions = false;
+  bool hasReceivedBalance = false;
 
   Future getTransactions() async {
-    if(!hasReceived) {
+    if(!hasReceivedTransactions) {
       transactions.clear();
       WidgetsFlutterBinding.ensureInitialized();
       var db = FirebaseFirestore.instance;
@@ -55,20 +56,52 @@ class _HomePageState extends State<HomePage> {
         DateTime bDate = DateTime.parse((b as TransactionWidget).date.split("/").reversed.join());
         return bDate.compareTo(aDate);
       });
+      transactions.removeRange(6, transactions.length);
+      calculateIncomeExpense();
       for (int i = 1; i < transactions.length; i += 2) {
         transactions.insert(i, const SizedBox(height: 10));
       }
-      transactions.removeRange(12, transactions.length);
       setState(() {
-        hasReceived = true;
+        hasReceivedTransactions = true;
         print("got transactions");
       });
+    }
+  }
+
+  double income = 0;
+  double expense = 0;
+  void calculateIncomeExpense() {
+    for(int i = 0; i < transactions.length; i++) {
+      double amount = (transactions[i] as TransactionWidget).getAmount;
+      if(amount > 0) {
+        income += amount;
+      } else {
+        expense += amount.abs();
+      }
+    }
+    print(income);
+    print(expense);
+  }
+
+  var balance = 0;
+  Future getBalance() async {
+    if(!hasReceivedBalance) {
+      var db = FirebaseFirestore.instance;
+      DocumentReference docRef = db.collection('user').doc('archerdoc13@gmail.com');
+      DocumentSnapshot doc = await docRef.get();
+      if (doc.exists) {
+        setState(() {
+          balance = int.parse(doc["balance"]);
+          hasReceivedBalance = true;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     getTransactions();
+    getBalance();
 
     return SingleChildScrollView(
       child: Stack(
@@ -140,13 +173,13 @@ class _HomePageState extends State<HomePage> {
                 width: 30,
                 height: 30,
                 child: FloatingActionButton(
-                  heroTag: null,
+                  heroTag: "fdfdwwr",
                   onPressed: (){}, 
                   backgroundColor: Colors.white.withOpacity(0),
                   elevation: 0,
                   child: const Icon(
-                    Icons.arrow_upward,
-                    size: 15,
+                    Icons.keyboard_arrow_up,
+                    size: 30,
                   )
                 ),
               ),
@@ -168,12 +201,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget totalBalanceAmount() {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.only(left: 10),
       child: Text(
-        "\$2,500",
+        "\$$balance",
         textAlign: TextAlign.start,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
           fontSize: 30,
@@ -209,8 +242,8 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           const SizedBox(height: 10),
-          const Text(
-            "\$1,840", 
+          Text(
+            "\$$income", 
             style: TextStyle(fontSize: 15, color: Colors.white),
           ),
         ],
@@ -245,8 +278,8 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           const SizedBox(height: 10),
-          const Text(
-            "\$1,840", 
+          Text(
+            "\$$expense", 
             style: TextStyle(fontSize: 15, color: Colors.white),
           ),
         ],

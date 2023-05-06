@@ -22,10 +22,11 @@ class _WalletWidgetState extends State<WalletWidget> {
   Color mainColor = const Color.fromRGBO(94, 143, 140, 1);
   bool isConnect = false;
   final List<Widget> transactions = [];
-  bool hasReceived = false;
+  bool hasReceivedTransactions = false;
+  bool hasReceivedBalance = false;
 
   Future getTransactions() async {
-    if(!hasReceived) {
+    if(!hasReceivedTransactions) {
       transactions.clear();
       WidgetsFlutterBinding.ensureInitialized();
       var db = FirebaseFirestore.instance;
@@ -57,15 +58,32 @@ class _WalletWidgetState extends State<WalletWidget> {
         }
       }
       setState(() {
-        hasReceived = true;
+        hasReceivedTransactions = true;
         print("got transactions");
       });
+    }
+  }
+
+  var balance = 0;
+  Future getBalance() async {
+    if(!hasReceivedBalance) {
+      var db = FirebaseFirestore.instance;
+      DocumentReference docRef = db.collection('user').doc('archerdoc13@gmail.com');
+      DocumentSnapshot doc = await docRef.get();
+      if (doc.exists) {
+        setState(() {
+          balance = int.parse(doc["balance"]);
+          print(balance);
+          hasReceivedBalance = true;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     getTransactions();
+    getBalance();
     
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -148,15 +166,15 @@ class _WalletWidgetState extends State<WalletWidget> {
 
   Widget totalBalance() {
     return Column(
-      children: const [
-        Text(
+      children: [
+        const Text(
           "Total Balance",
           style: TextStyle(fontSize: 15, color: Colors.black54)
         ),
         SizedBox(height: 10),
         Text(
-          "\$2,548.00",
-          style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold)
+          "\$$balance.00",
+          style: const TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold)
         )
       ],
     );
@@ -176,6 +194,7 @@ class _WalletWidgetState extends State<WalletWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FloatingActionButton(
+          heroTag: "adfvdfvd",
           elevation: 0,
           backgroundColor: Colors.white,
           onPressed: () {
@@ -187,6 +206,7 @@ class _WalletWidgetState extends State<WalletWidget> {
         ),
         const SizedBox(width: 25),
         FloatingActionButton(
+          heroTag: "adfvdfvderer",
           elevation: 0,
           backgroundColor: Colors.white,
           onPressed: (){}, 
@@ -195,6 +215,7 @@ class _WalletWidgetState extends State<WalletWidget> {
         ),
         const SizedBox(width: 25),
         FloatingActionButton(
+          heroTag: "adfvdfvdvvcc",
           elevation: 0,
           onPressed: (){}, 
           backgroundColor: Colors.white,

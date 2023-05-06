@@ -16,7 +16,7 @@ class TransactionWidget extends StatefulWidget {
   final double amount;
 
   String get getDate => date;
-
+  double get getAmount => amount;
 
   @override
   State<TransactionWidget> createState() => _TransactionWidgetState();
