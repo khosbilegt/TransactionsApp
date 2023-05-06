@@ -21,9 +21,11 @@ class _WalletWidgetState extends State<WalletWidget> {
 
   Color mainColor = const Color.fromRGBO(94, 143, 140, 1);
   bool isConnect = false;
-  final List<Widget> transactions = [];
   bool hasReceivedTransactions = false;
+  bool hasReceivedBills = false;
   bool hasReceivedBalance = false;
+  List<Widget> transactions = [];
+  List<Widget> bills = [];
 
   Future getTransactions() async {
     if(!hasReceivedTransactions) {
@@ -64,6 +66,46 @@ class _WalletWidgetState extends State<WalletWidget> {
     }
   }
 
+  Future getBills() async {
+    if(!hasReceivedBills) {
+      bills.clear();
+      WidgetsFlutterBinding.ensureInitialized();
+      var db = FirebaseFirestore.instance;
+      CollectionReference users = db.collection('bills');
+      QuerySnapshot querySnapshot = await users.get();
+      for (var doc in querySnapshot.docs) {
+        dynamic data = doc.data();
+        if(data["title"] != null) {
+          double amount = 0;
+          if(data["amount"].runtimeType == String) {
+            amount = double.parse(data["amount"]);
+          }
+          else if(data["amount"].runtimeType == int) {
+            amount = data["amount"].toDouble();
+          }
+          else if(data["amount"].runtimeType == double) {
+            amount = data["amount"];
+          }
+          
+          bills.add(
+            BillWidget(
+              title: data["title"],
+              imagePath: data["icon"],
+              date: data["date"],
+              amount: amount,
+              name: data["name"]
+            )
+          );
+          bills.add(const SizedBox(height: 10));
+        }
+      }
+      setState(() {
+        hasReceivedBills = true;
+        print("got bills");
+      });
+    }
+  }
+
   var balance = 0;
   Future getBalance() async {
     if(!hasReceivedBalance) {
@@ -72,8 +114,12 @@ class _WalletWidgetState extends State<WalletWidget> {
       DocumentSnapshot doc = await docRef.get();
       if (doc.exists) {
         setState(() {
-          balance = int.parse(doc["balance"]);
-          print(balance);
+          if(doc["balance"].runtimeType == String) {
+            balance = int.parse(doc["balance"]);
+          }
+          if(doc["balance"].runtimeType == int) {
+            balance = doc["balance"];
+          }
           hasReceivedBalance = true;
         });
       }
@@ -83,6 +129,7 @@ class _WalletWidgetState extends State<WalletWidget> {
   @override
   Widget build(BuildContext context) {
     getTransactions();
+    getBills();
     getBalance();
     
     return Scaffold(
@@ -267,26 +314,6 @@ class _WalletWidgetState extends State<WalletWidget> {
       ),
     );
   }
-
-  List<Widget> bills = const [
-    BillWidget(
-        title: "Netflix",
-        imagePath: "assets/images/netflix.png",
-        date: "01/05/2023",
-    ),
-    SizedBox(height: 10),
-    BillWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: "01/05/2023",
-    ),
-    SizedBox(height: 10),
-    BillWidget(
-      title: "Youtube",
-      imagePath: "assets/images/youtube.png",
-      date: "01/05/2023",
-    ),
-  ];
 
   Widget toggledContents() {
     return Container(

@@ -321,7 +321,7 @@ class _AddPageState extends State<AddPage> {
       DocumentSnapshot doc = await docRef.get();
       if (doc.exists) {
         int balance = int.parse(doc["balance"]);
-        int newBalance = balance + int.parse(amountController.value.text);
+        int newBalance = balance - int.parse(amountController.value.text);
         await docRef.update({'balance': newBalance});
       }
   }

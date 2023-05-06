@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BillPaymentPage extends StatefulWidget {
-  const BillPaymentPage({super.key});
+  const BillPaymentPage({
+    super.key, 
+    required this.amount, 
+    required this.title,
+    required this.name,
+    required this.date
+  });
+
+  final double amount;
+  final String title;
+  final String name;
+  final String date;
 
   @override
   State<BillPaymentPage> createState() => _BillPaymentPageState();
@@ -102,7 +115,7 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
         ),
         const SizedBox(height: 15),
         isPaying 
-        ? Text("") 
+        ? const Text("") 
         : paymentMethod(),
         const SizedBox(height: 50),
         payButton()
@@ -117,7 +130,7 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Price: ", style: infoStyle),
-            Text("\$9.99", style: priceStyle)
+            Text("\$${widget.amount}", style: priceStyle)
           ],
         ),
         const SizedBox(height: 10),
@@ -138,7 +151,8 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Total: ", style: infoStyle),
-            const Text("\$12.99", style: TextStyle(
+            Text("\$${widget.amount + 1.99}", 
+            style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold
               )
@@ -150,21 +164,21 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
   }
 
   Widget billInfo() {
-    String billFor = "Youtube Premium";
+    String billFor = widget.name;
     if(isPaying) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(25.0),
             ),
-            child: const Image(
+            child: Image(
               height: 30,
-              image: AssetImage("assets/images/youtube.png")
+              image: AssetImage("assets/images/${widget.title.toLowerCase()}.png")
             )
           ),
           const SizedBox(height: 15),
@@ -201,26 +215,26 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
     return Row(
       children:[
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           decoration: BoxDecoration(
             color: Colors.black12,
             borderRadius: BorderRadius.circular(25.0),
           ),
-          child: const Image(
+          child: Image(
             height: 20,
-            image: AssetImage("assets/images/youtube.png")
+            image: AssetImage("assets/images/${widget.title.toLowerCase()}.png")
           )
         ),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
-              "Youtube Premium", 
+              billFor, 
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18)
             ),
             Text(
-              "Feb 28, 2022", 
+              widget.date, 
               style: TextStyle(color: Colors.black45 ,fontSize: 12)
             )
           ],
@@ -290,13 +304,13 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
           ),
         ),
         onPressed: () {
-          setState(() {
-            if(!isPaying) {
+          if(!isPaying) {
+            setState(() {
               isPaying = true;
-            } else {
-              isConfirmed = true;
-            }
-          });
+            });
+          } else {
+            addTransaction();
+          }
         }, 
         child: Text(isPaying ? "Confirm and Pay" : "Pay Now")
       )
@@ -340,7 +354,10 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
   }
 
   bool isHidden = false;
+  String transactionId = "";
   Widget transactionDetails() {
+    DateTime now = DateTime.now();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -366,7 +383,7 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Payment Method: ", style: infoStyle),
-                Text("\$1.99", style: priceStyle)
+                Text(activeType == 0 ? "Debit Card" : "Paypal", style: priceStyle)
               ],
             ),
             const SizedBox(height: 25),
@@ -374,7 +391,11 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Status: ", style: infoStyle),
-                Text("\$1.99", style: priceStyle)
+                Text("Completed", style: TextStyle(
+                  color: accentColor,
+                  fontWeight: FontWeight.w500
+                  )
+                )
               ],
             ),
             const SizedBox(height: 25),
@@ -382,7 +403,7 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Time: ", style: infoStyle),
-                Text("\$1.99", style: priceStyle)
+                Text('${now.hour}:${now.minute.toString().padLeft(2, '0')}', style: priceStyle)
               ],
             ),
             const SizedBox(height: 25),
@@ -390,7 +411,7 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Date: ", style: infoStyle),
-                Text("\$1.99", style: priceStyle)
+                Text(DateFormat('MMM d, y').format(now), style: priceStyle)
               ],
             ),
             const SizedBox(height: 25),
@@ -398,7 +419,7 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Transaction ID: ", style: infoStyle),
-                Text("\$1.99", style: priceStyle)
+                Text(transactionId, style: priceStyle)
               ],
             ),
             const SizedBox(height: 25),
@@ -432,6 +453,45 @@ class _BillPaymentPageState extends State<BillPaymentPage> {
         child: const Text("Share Receipt")
       )
     );
+  }
+
+  Future addTransaction() async {
+    DateTime now = DateTime.now();
+    // Validate Amount
+    WidgetsFlutterBinding.ensureInitialized();
+    var db = FirebaseFirestore.instance;
+    final transaction = <String, dynamic>{
+      "amount": widget.amount,
+      "date": DateFormat('dd/MM/yyyy').format(now),
+      "title": widget.title,
+      "icon": "assets/images/${widget.title}.png".toLowerCase()
+    };
+    db.collection("transactions").add(transaction).then((doc) => {
+      print('DocumentSnapshot added with ID: ${doc.id}'),
+      addBalance().then((value) => {
+        Navigator.pop(context)
+      })
+    });
+  }
+
+  Future addBalance() async {
+    var db = FirebaseFirestore.instance;
+      DocumentReference docRef = db.collection('user').doc('archerdoc13@gmail.com');
+      DocumentSnapshot doc = await docRef.get();
+      if (doc.exists) {
+        int balance = 0;
+        if(doc["balance"].runtimeType == String) {
+          balance = int.parse(doc["balance"]);
+        }
+        if(doc["balance"].runtimeType == int) {
+          balance = doc["balance"];
+        }
+        double newBalance = balance - widget.amount;
+        await docRef.update({'balance': newBalance.toInt()});
+        setState(() {
+          isConfirmed = true;
+        });
+      }
   }
 }
 
