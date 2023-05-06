@@ -19,7 +19,7 @@ class _WrapperWidgetState extends State<WrapperWidget> {
 
   CarouselController carouselController = CarouselController();
   int currentIndex = 0;
-  bool isOnboard = false;
+  bool isOnboard = true;
   
   @override
   Widget build(BuildContext context) {

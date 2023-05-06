@@ -91,7 +91,12 @@ class _HomePageState extends State<HomePage> {
       DocumentSnapshot doc = await docRef.get();
       if (doc.exists) {
         setState(() {
-          balance = int.parse(doc["balance"]);
+          if(doc["balance"].runtimeType == String) {
+            balance = int.parse(doc["balance"]);
+          }
+          if(doc["balance"].runtimeType == int) {
+            balance = doc["balance"];
+          }
           hasReceivedBalance = true;
         });
       }
@@ -204,7 +209,7 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding: EdgeInsets.only(left: 10),
       child: Text(
-        "\$$balance",
+        "\$$balance.00",
         textAlign: TextAlign.start,
         style: const TextStyle(
           color: Colors.white,

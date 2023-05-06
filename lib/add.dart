@@ -309,7 +309,20 @@ class _AddPageState extends State<AddPage> {
     };
     db.collection("transactions").add(transaction).then((doc) => {
       print('DocumentSnapshot added with ID: ${doc.id}'),
-      Navigator.pop(context)
+      addBalance().then((value) => {
+        Navigator.pop(context)
+      })
     });
+  }
+
+  Future addBalance() async {
+    var db = FirebaseFirestore.instance;
+      DocumentReference docRef = db.collection('user').doc('archerdoc13@gmail.com');
+      DocumentSnapshot doc = await docRef.get();
+      if (doc.exists) {
+        int balance = int.parse(doc["balance"]);
+        int newBalance = balance + int.parse(amountController.value.text);
+        await docRef.update({'balance': newBalance});
+      }
   }
 }
