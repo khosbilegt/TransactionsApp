@@ -12,7 +12,7 @@ class TransactionWidget extends StatefulWidget {
 
   final String title;
   final String imagePath;
-  final DateTime date;
+  final String date;
   final double amount;
 
   @override
@@ -72,7 +72,7 @@ class _TransactionWidgetState extends State<TransactionWidget> {
               ),
             ),
             Text(
-              parseDate(),
+              widget.date,
               style: const TextStyle(
                 color: Colors.black54,
                 fontSize: 14
@@ -82,11 +82,6 @@ class _TransactionWidgetState extends State<TransactionWidget> {
         ),
       ]
     );
-  }
-
-  String parseDate() {
-    DateTime date = widget.date;
-    return "${date.day} ${convertMonth(date.month)}, ${date.year}";
   }
 
   String convertMonth(int month) {

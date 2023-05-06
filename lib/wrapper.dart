@@ -38,10 +38,10 @@ class _WrapperWidgetState extends State<WrapperWidget> {
             },
           ),
           items: <Widget>[
-            const HomePage(title: "Test"),
-            const HomePage(title: "Test"),
+            HomePage(carousel: carouselController),
+            HomePage(carousel: carouselController),
             WalletWidget(carousel: carouselController),
-            const HomePage(title: "Test"),
+            HomePage(carousel: carouselController),
           ]
         ),
         bottomNavigationBar: bottomBar(),
@@ -71,10 +71,10 @@ class _WrapperWidgetState extends State<WrapperWidget> {
             },
           ),
           items: <Widget>[
-            const HomePage(title: "Test"),
-            const HomePage(title: "Test"),
+            HomePage(carousel: carouselController),
+            HomePage(carousel: carouselController),
             WalletWidget(carousel: carouselController),
-            const HomePage(title: "Test"),
+            HomePage(carousel: carouselController),
           ]
         ),
         bottomNavigationBar: bottomBar(),

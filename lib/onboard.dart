@@ -1,9 +1,12 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transactions/home.dart';
 
 class OnboardPage extends StatefulWidget {
-  const OnboardPage({super.key});
+  const OnboardPage({super.key, required this.carousel});
+
+  final CarouselController carousel;
 
   @override
   State<OnboardPage> createState() => _OnboardPageState();
@@ -40,7 +43,7 @@ class _OnboardPageState extends State<OnboardPage> {
             onPressed: (){
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const HomePage(title: "")),
+              MaterialPageRoute(builder: (context) => HomePage(carousel: widget.carousel)),
               );
             }, 
             child: const Text("Get Started")

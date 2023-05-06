@@ -11,7 +11,7 @@ class BillWidget extends StatefulWidget {
 
   final String title;
   final String imagePath;
-  final DateTime date;
+  final String date;
 
   @override
   State<BillWidget> createState() => _BillWidgetState();
@@ -71,7 +71,7 @@ class _BillWidgetState extends State<BillWidget> {
               ),
             ),
             Text(
-              parseDate(),
+              widget.date,
               style: const TextStyle(
                 color: Colors.black54,
                 fontSize: 14
@@ -81,11 +81,6 @@ class _BillWidgetState extends State<BillWidget> {
         ),
       ]
     );
-  }
-
-  String parseDate() {
-    DateTime date = widget.date;
-    return "${date.day} ${convertMonth(date.month)}, ${date.year}";
   }
 
   String convertMonth(int month) {

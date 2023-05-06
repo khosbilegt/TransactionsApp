@@ -208,21 +208,21 @@ class _WalletWidgetState extends State<WalletWidget> {
     TransactionWidget(
         title: "Netflix",
         imagePath: "assets/images/netflix.jpg",
-        date: DateTime(2002),
+        date: "01/05/2023",
         amount: 15,
     ),
     const SizedBox(height: 10),
     TransactionWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
+      date: "01/05/2023",
       amount: -15,
     ),
     const SizedBox(height: 10),
     TransactionWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
+      date: "01/05/2023",
       amount: -15,
     ),
   ];
@@ -231,19 +231,19 @@ class _WalletWidgetState extends State<WalletWidget> {
     BillWidget(
         title: "Netflix",
         imagePath: "assets/images/netflix.jpg",
-        date: DateTime(2002),
+        date: "01/05/2023",
     ),
     const SizedBox(height: 10),
     BillWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
+      date: "01/05/2023",
     ),
     const SizedBox(height: 10),
     BillWidget(
       title: "Youtube",
       imagePath: "assets/images/youtube.png",
-      date: DateTime(2002),
+      date: "01/05/2023",
     ),
   ];
 

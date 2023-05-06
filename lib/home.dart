@@ -1,12 +1,12 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:transactions/transaction.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+  const HomePage({super.key, required this.carousel});
 
-  final String title;
-  
+  final CarouselController carousel;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,22 +16,51 @@ class _HomePageState extends State<HomePage> {
 
   final Color balanceCardColor = const Color.fromRGBO(70, 124, 121, 1);
   final Color helloCardColor = const Color.fromRGBO(77, 135, 131, 1);
+  final List<Widget> transactions = [];
+  bool hasReceived = false;
 
   Future getTransactions() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    var db = FirebaseFirestore.instance;
-    final user = <String, dynamic>{
-      "first": "Ada",
-      "last": "Lovelace",
-      "born": 1815
-    };
-    db.collection("transactions").add(user).then((doc) =>
-    print('DocumentSnapshot added with ID: ${doc.id}'));
+    if(!hasReceived) {
+      transactions.clear();
+      WidgetsFlutterBinding.ensureInitialized();
+      var db = FirebaseFirestore.instance;
+      CollectionReference users = db.collection('transactions');
+      QuerySnapshot querySnapshot = await users.get();
+      for (var doc in querySnapshot.docs) {
+        dynamic data = doc.data();
+        if(data["title"] != null) {
+          double amount = 0;
+          if(data["amount"].runtimeType == String) {
+            amount = double.parse(data["amount"]);
+          }
+          else if(data["amount"].runtimeType == int) {
+            amount = data["amount"].toDouble();
+          }
+          else if(data["amount"].runtimeType == double) {
+            amount = data["amount"];
+          }
+          
+          transactions.add(
+            TransactionWidget(
+              title: data["title"],
+              imagePath: data["icon"],
+              date: data["date"],
+              amount: amount,
+            )
+          );
+          transactions.add(const SizedBox(height: 10));
+        }
+      }
+      setState(() {
+        hasReceived = true;
+        print("got transactions");
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    //getTransactions();
+    getTransactions();
 
     return SingleChildScrollView(
       child: Stack(
@@ -221,69 +250,39 @@ class _HomePageState extends State<HomePage> {
     return SizedBox(
       height:  MediaQuery.of(context).size.height - 350,
       width: MediaQuery.of(context).size.width,
-      child: ListView(
-        padding: const EdgeInsets.all(10),
+      child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 "Transactions History",
-                style: TextStyle(fontSize: 17),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
               TextButton(
-                onPressed: () => {},
+                onPressed: (){
+                  widget.carousel.jumpToPage(2);
+                }, 
                 child: const Text(
                   "See all",
-                  style: TextStyle(color: Colors.black54),
-                ),
-              ),
+                  style: TextStyle(color: Colors.black45)
+                )
+              )
             ],
           ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Netflix",
-            imagePath: "assets/images/netflix.jpg",
-            date: DateTime(2002),
-            amount: 15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
-          ),
-          const SizedBox(height: 10),
-          TransactionWidget(
-            title: "Youtube",
-            imagePath: "assets/images/youtube.png",
-            date: DateTime(2002),
-            amount: -15,
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 450,
+            child: ListView.builder(
+              padding: const EdgeInsets.all(10),
+              itemCount: transactions.length,
+              itemBuilder: (BuildContext context, int index) {
+                final transaction = transactions[index];
+                return transaction;
+              },
+            )
           ),
         ],
-      )
+      ),
     );
   }
 
@@ -326,7 +325,7 @@ class _HomePageState extends State<HomePage> {
         child: FloatingActionButton(
           heroTag: null,
           backgroundColor: const Color.fromRGBO(94, 143, 140, 1),
-          elevation: 3,
+          elevation: 1,
           onPressed: () {},
           child: const Icon(Icons.notifications),
         ),
