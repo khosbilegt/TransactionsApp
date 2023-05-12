@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ConnectCardPage extends StatefulWidget {
-  const ConnectCardPage({super.key});
+  const ConnectCardPage({super.key, required this.carousel});
 
+  final CarouselController carousel;
   @override
   State<ConnectCardPage> createState() => _ConnectCardPageState();
 }
@@ -279,8 +282,52 @@ class _ConnectCardPageState extends State<ConnectCardPage> {
             ),
           ],
         ),
+        const SizedBox(height: 25),
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: accentColor
+            ),
+            onPressed: () {
+              addCard();
+            }, 
+            child: Text("Test")
+          ),
+        )
       ],
     );
+  }
+
+  Future addCard() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    var db = FirebaseFirestore.instance;
+    final card = <String, dynamic>{
+      "cvc": cvcController.value.text,
+      "expiration": expirationController.value.text,
+      "balance": 1000,
+      "name": nameController.value.text,
+      "number": debitController.value.text,
+      "zip": zipController.value.text
+    };
+    db.collection("cards").add(card).then((doc) => {
+      print('DocumentSnapshot added with ID: ${doc.id}'),
+      addBalance().then((value) => {
+        widget.carousel.jumpToPage(0)
+      })
+    });
+  }
+
+  Future addBalance() async {
+    var db = FirebaseFirestore.instance;
+      DocumentReference docRef = db.collection('user').doc('archerdoc13@gmail.com');
+      DocumentSnapshot doc = await docRef.get();
+      if (doc.exists) {
+        int balance =doc["balance"];
+        int newBalance = balance + 1000;
+        await docRef.update({'balance': newBalance});
+      }
   }
 
   Widget accountContents() {

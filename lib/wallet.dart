@@ -212,7 +212,7 @@ class _WalletWidgetState extends State<WalletWidget> {
           width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            child: isConnect ? const ConnectCardPage()  : mainContent()
+            child: isConnect ? ConnectCardPage(carousel: widget.carousel,)  : mainContent()
           ),
         )
       ],
