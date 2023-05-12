@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:transactions/transaction.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.carousel});
@@ -20,6 +21,49 @@ class _HomePageState extends State<HomePage> {
   bool hasReceivedTransactions = false;
   bool hasReceivedBalance = false;
   bool isTotalBalanceHidden = false;
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    initializeNotifications();
+  }
+
+Future<void> initializeNotifications() async {
+    // Initialize the plugin
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings();
+    const InitializationSettings initializationSettings =
+        InitializationSettings(iOS: initializationSettingsIOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    // Request permissions
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future<void> scheduleNotification() async {
+    // Schedule a notification to appear in 5 seconds
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
+    const NotificationDetails notificationDetails =
+        NotificationDetails(iOS: iosDetails);
+    await flutterLocalNotificationsPlugin.schedule(
+      0,
+      'Hello World',
+      'This is a notification from Flutter!',
+      DateTime.now().add(const Duration(seconds: 5)),
+      notificationDetails,
+    );
+  }
+
 
   Future getTransactions() async {
     if(!hasReceivedTransactions) {
@@ -381,7 +425,9 @@ class _HomePageState extends State<HomePage> {
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromRGBO(94, 143, 140, 1),
           ),
-          onPressed: () {},
+          onPressed: () {
+            scheduleNotification();
+          },
           child: const Center(
             child: Icon(Icons.notifications, size: 20),
           )
