@@ -36,6 +36,7 @@ class _WrapperWidgetState extends State<WrapperWidget> {
             height: MediaQuery.of(context).size.height,
             enableInfiniteScroll: false,
             viewportFraction: 1,
+            scrollPhysics: NeverScrollableScrollPhysics(),
             onPageChanged:(index, reason) => {
               currentIndex = index,
               setState(() {}),

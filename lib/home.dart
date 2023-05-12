@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> transactions = [];
   bool hasReceivedTransactions = false;
   bool hasReceivedBalance = false;
+  bool isTotalBalanceHidden = false;
 
   Future getTransactions() async {
     if(!hasReceivedTransactions) {
@@ -116,6 +117,7 @@ class _HomePageState extends State<HomePage> {
           Center (
             child: mainArea()
           ),
+          sendAgain()
         ]
       )
     );
@@ -140,13 +142,15 @@ class _HomePageState extends State<HomePage> {
         ),
         color: balanceCardColor,
       ),
-      height: 200,
+      height: isTotalBalanceHidden ? 130 : 200,
       width: MediaQuery.of(context).size.width * 0.9,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           totalBalanceText(),
+          isTotalBalanceHidden ? const Text("") :
           totalBalanceAmount(),
+          isTotalBalanceHidden ? const Text("") :
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -179,11 +183,15 @@ class _HomePageState extends State<HomePage> {
                 height: 30,
                 child: FloatingActionButton(
                   heroTag: "fdfdwwr",
-                  onPressed: (){}, 
+                  onPressed: (){
+                    setState(() {
+                      isTotalBalanceHidden = !isTotalBalanceHidden;
+                    });
+                  }, 
                   backgroundColor: Colors.white.withOpacity(0),
                   elevation: 0,
-                  child: const Icon(
-                    Icons.keyboard_arrow_up,
+                  child: Icon(
+                    isTotalBalanceHidden ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
                     size: 30,
                   )
                 ),
@@ -207,7 +215,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget totalBalanceAmount() {
     return Padding(
-      padding: EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.only(left: 10),
       child: Text(
         "\$$balance.00",
         textAlign: TextAlign.start,
@@ -364,26 +372,73 @@ class _HomePageState extends State<HomePage> {
 
   Widget notificationsButton() {
     return Positioned(
-      top: 90,
-      right: 25,
-      child: SizedBox(
+      top: 70,
+      right: 15,
+      child: Container(
         height: 40,
-        child: FloatingActionButton(
-          heroTag: null,
-          backgroundColor: const Color.fromRGBO(94, 143, 140, 1),
-          elevation: 1,
+        width: 50,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromRGBO(94, 143, 140, 1),
+          ),
           onPressed: () {},
-          child: const Icon(Icons.notifications),
+          child: const Center(
+            child: Icon(Icons.notifications, size: 20),
+          )
         ),
       )
     );
   }
 
   Widget sendAgain() {
-    return Row(
-      children: [
-        FloatingActionButton(onPressed: () {}, child: const Image(image: AssetImage("assets/images/youtube.png")))
-      ],
+    return Positioned(
+      bottom: isTotalBalanceHidden ? 10 : 80,
+      child: Container(
+        height: 120,
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Send Again", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    TextButton(
+                      onPressed: (() => {
+
+                      }),
+                      child: const Text("See all", style: TextStyle(fontSize: 15, color: Colors.black54)),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    sendButton("assets/images/person1.png"),
+                    sendButton("assets/images/person2.png"),
+                    sendButton("assets/images/person3.png"),
+                    sendButton("assets/images/person4.png"),
+                    sendButton("assets/images/person5.png"),
+                  ],
+                ),
+              ],
+            ),
+        )
+      )
+    );
+  }
+
+  Widget sendButton(String image) {
+    return FloatingActionButton(
+      onPressed: () {}, 
+      child: CircleAvatar(
+        backgroundImage: AssetImage(image),
+        radius: 200,
+      )
     );
   }
 }

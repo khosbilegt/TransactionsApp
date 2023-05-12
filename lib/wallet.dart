@@ -161,9 +161,34 @@ class _WalletWidgetState extends State<WalletWidget> {
       backgroundColor: Colors.white.withOpacity(0),
       elevation: 0,
       foregroundColor: Colors.white,
+      actions: [
+        notificationsButton(),
+      ],
       title: isConnect ? const Text("Connect Wallet") : const Text("Wallet"),
     );
   }
+
+ Widget notificationsButton() {
+    return Row(
+      children: [
+        SizedBox(
+          height: 40,
+          width: 50,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(94, 143, 140, 1),
+            ),
+            onPressed: () {},
+            child: const Center(
+              child: Icon(Icons.notifications, size: 20),
+            )
+          ),
+        ),
+        const SizedBox(width: 20)
+      ],
+    );
+  }
+
 
   Widget topBox() {
     return const Positioned(
